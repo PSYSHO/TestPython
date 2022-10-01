@@ -1,95 +1,60 @@
-#Task1 напишите программу которая принимает на вход цифру,
-# обозначающую день недели,и проверяет,является ли этот день выходным.
-print('Task1'+'\n')
-day = int(input('Enter day number'))
-if day >7 or day <1:
-    print('Please repeatthe input')
-elif day ==6 or day==7:
-    print("Yes, it's weekend!")
-else:
-    print("No, it's not weekend!")
+print('Task1 Напишите программу, которая принимает на вход вещественное число и показывает сумму его цифр')
+float_num = input('input float number: ')
+print(type(float_num))
+sum = 0
+for i in float_num:
+    if i != '.':
+        sum += int(i)
 
-#Task1.1 Напишите программу для. проверки истинности утверждения ¬(X ⋁ Y ⋁ Z) = ¬X ⋀ ¬Y ⋀ ¬Z для всех значений предикат.
-print('Task1.1'+'\n')
-def inputNumbers(x):
-    xyz = ["X", "Y", "Z"]
-    a = []
-    for i in range(x):
-        a.append(input(f"Введите значение {xyz[i]}: "))
-    return a
+print(sum)
 
+print('Task2 Напишите программу, которая принимает на вход число N и выдает набор произведений чисел от 1 до N.')
+number = int(input('input N: '))
+factorial = 1
+for i in range(1, number + 1):
+    factorial *= i
+    print(factorial)
 
-def checkPredicate(x):
-    left = not (x[0] or x[1] or x[2])
-    right = not x[0] and not x[1] and not x[2]
-    result = left == right
-    return result
+print('Task3 Задайте список из n чисел последовательности $(1+\\frac 1 n)^n$ и выведите на экран их сумму.')
+number = int(input('Enter number: '))
 
 
-statement = inputNumbers(3)
-
-if checkPredicate(statement) == True:
-    print(f"Утверждение истинно")
-else:
-    print(f"Утверждение ложно")
-
-#Task 2 Напишите программу, которая принимает на вход координаты точки (X и Y),
-#причём X ≠ 0 и Y ≠ 0 и выдаёт номер четверти плоскости, в которой находится эта точка (или на какой оси она находится).
-#Пример: - x=34; y=-30 -> 4 - x=2; y=4-> 1 - x=-34; y=-30 -> 3
-
-print('Task2'+'\n')
-def inputCoordinates(x):
-    a = [0] * x
-    for i in range(x):
-        is_OK = False
-        while not is_OK:
-            try:
-                number = float(input(f"Введите {i+1} координату: "))
-                a[i] = number
-                is_OK = True
-                if a[i] == 0:
-                    is_OK = False
-                    print("Координата не должно быть равна 0 ")
-            except ValueError:
-                print("Ты ошибся. Вводить надо числа!")
-    return a
+def sequence(num):
+    return [round((1 + 1 / x) ** x, 2) for x in range(1, num + 1)]
 
 
-def checkCoordinates(xy):
-    text = 4
-    if xy[0] > 0 and xy[1] > 0:
-        text = 1
-    elif xy[0] < 0 and xy[1] > 0:
-        text = 2
-    elif xy[0] < 0 and xy[1] < 0:
-        text = 3
-    print(f"Точка находится в {text} четверти плоскости")
+print(sequence(number))
+#print(round(sum(sequence(number))))
 
+print('Task4 Задайте список из N элементов, заполненных числами из промежутка [-N, N]. Найдите произведение элементов на указанных позициях. Позиции хранятся в файле file.txt в одной строке одно число.')
+import random
+N = int(input('Введите число'))
+numbers = []
+for i in range(N):
+    numbers.append(random.randint(-N, N + 1))
 
-koordinate = inputCoordinates(2)
-checkCoordinates(koordinate)
+print(numbers)
+print(numbers[1] * numbers[3])
 
-#Task3 Напишите программу, которая по заданному номеру четверти, показывает диапазон возможных координат точек в этой четверти (x и y).
-print('Task3'+'\n')
-n = int(input('input quarter number'))
-if n<1 or n>4:
-    print('Please, repeat the input')
-elif n==1:
-    print('x>0 and y>0')
-elif n ==2:
-    print('x<0 and y>0')
-elif n==3:
-    print('x<0 and y<0')
-elif n==4:
-    print('x>0 and y<0')
+file = open('file.txt', 'w')
+while True:
+    s = input('Укажите позицию для вычисления - ')
+    if s == "":
+        break
+    file.write(s + "\n")
+file.close()
 
-#Task4 Напишите программу, которая принимает на вход координаты двух точек и находит расстояние между ними в 2D пространстве.
-print('Task4'+'\n')
-print('Enter coordinates point A:')
-Ax = float(input('X: '))
-Ay = float(input('Y: '))
-print('Enter coordinates point B:')
-Bx = float(input('X: '))
-By = float(input('Y: '))
-from math import sqrt
-print('Distance between A and B: ',round(sqrt(Ax-Bx)**2+(Ay-By)**2),2)
+result = 1
+file = open('file.txt', 'r')
+for line in file:
+    if line == "":
+        break
+    result *= numbers[int(line)]
+file.close()
+print(result)
+
+print('Task5 Реализуйте алгоритм перемешивания списка.')
+lst = [random.randint(0,10) for i in range(random.randint(5,20))]
+print(f"исходный список:\n {lst}")
+random.shuffle(lst)
+print(f"список после перемешивания:\n{lst}")
