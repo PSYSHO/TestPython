@@ -1,60 +1,69 @@
-print('Task1 Напишите программу, которая принимает на вход вещественное число и показывает сумму его цифр')
-float_num = input('input float number: ')
-print(type(float_num))
-sum = 0
-for i in float_num:
-    if i != '.':
-        sum += int(i)
+print('Task1 Задайте список из нескольких чисел. Напишите программу, которая найдёт сумму элементов списка, стоящих на нечётной позиции.')
+def sumOddIndex(lst):
+    s = 0
+    for i in range(len(lst)):
+        if i % 2 != 0:
+            s += lst[i]
+    print(f"Сумма равна: {s}")
 
-print(sum)
+lst = [2, 3, 5, 9, 3]
+sumOddIndex(lst)
+lst = list(map(int, input("Введите числа через пробел:\n").split()))
+sumOddIndex(lst)
 
-print('Task2 Напишите программу, которая принимает на вход число N и выдает набор произведений чисел от 1 до N.')
-number = int(input('input N: '))
-factorial = 1
-for i in range(1, number + 1):
-    factorial *= i
-    print(factorial)
-
-print('Task3 Задайте список из n чисел последовательности $(1+\\frac 1 n)^n$ и выведите на экран их сумму.')
-number = int(input('Enter number: '))
-
-
-def sequence(num):
-    return [round((1 + 1 / x) ** x, 2) for x in range(1, num + 1)]
-
-
-print(sequence(number))
-#print(round(sum(sequence(number))))
-
-print('Task4 Задайте список из N элементов, заполненных числами из промежутка [-N, N]. Найдите произведение элементов на указанных позициях. Позиции хранятся в файле file.txt в одной строке одно число.')
+print('Task2 Напишите программу, которая найдёт произведение пар чисел списка. Парой считаем первый и последний элемент, второй и предпоследний и т.д.')
 import random
-N = int(input('Введите число'))
-numbers = []
-for i in range(N):
-    numbers.append(random.randint(-N, N + 1))
+number = int(input('Введите размер списка '))
+list = []
+list2 = []
 
-print(numbers)
-print(numbers[1] * numbers[3])
+for i in range(number):
+    list.append(random.randint(0, 9))
 
-file = open('file.txt', 'w')
-while True:
-    s = input('Укажите позицию для вычисления - ')
-    if s == "":
-        break
-    file.write(s + "\n")
-file.close()
+for i in range(len(list)):
+    while i < len(list)/2 and number > len(list)/2:
+        number = number - 1
+        a = list[i] * list[number]
+        list2.append(a)
+        i += 1
 
-result = 1
-file = open('file.txt', 'r')
-for line in file:
-    if line == "":
-        break
-    result *= numbers[int(line)]
-file.close()
-print(result)
+print(list)
+print(list2)
 
-print('Task5 Реализуйте алгоритм перемешивания списка.')
-lst = [random.randint(0,10) for i in range(random.randint(5,20))]
-print(f"исходный список:\n {lst}")
-random.shuffle(lst)
-print(f"список после перемешивания:\n{lst}")
+print('Task3 Задайте список из вещественных чисел. Напишите программу, которая найдёт разницу между максимальным и минимальным значением дробной части элементов.')
+
+my_list = [1.1, 1.2, 3.1, 5, 10.01]
+min = 1
+max = 0
+for i in my_list:
+    if (i - int(i)) <= min:
+        min = i - int(i)
+    if (i - int(i)) >= max:
+        max = i - int(i)
+print(max-min)
+
+print('Task4 Напишите программу, которая будет преобразовывать десятичное число в двоичное.')
+s = ""
+n = int(input("Введите число для преобразовывания десятичного числа в двоичное:\n"))
+while n != 0:
+    s = str(n%2) + s
+    n //=2
+print(s)
+
+print('Task5 Задайте число. Составьте список чисел Фибоначчи, в том числе для отрицательных индексов.')
+n = int(input('Введите число: '))
+def get_fibonacci(n):
+    fibo_nums = []
+    a, b = 1, 1
+    for i in range(n-1):
+        fibo_nums.append(a)
+        a, b = b, a + b
+    a, b = 0, 1
+    for i in range (n):
+        fibo_nums.insert(0, a)
+        a, b = b, a - b
+    return fibo_nums
+
+fibo_nums = get_fibonacci(n)
+print(get_fibonacci(n))
+print(fibo_nums.index(0))
