@@ -1,193 +1,236 @@
-print('Task 1 Вычислить число c заданной точностью d')
-from math import pi
-d =  int(input("Введите число для заданной точности числа Пи:\n"))
-print(f'число Пи с заданной точностью {d} равно {round(pi, d)}')
 
-print('Task 2 Задайте натуральное число N. Напишите программу, которая составит список простых множителей числа N.')
-num = int(input("Введите число: "))
-i = 2 # первое простое число
-lst = []
-old = num
-while i <= num:
-    if num % i == 0:
-        lst.append(i)
-        num //= i
-        i = 2
-    else:
-        i += 1
-print(f"Простые множители числа {old} приведены в списке: {lst}")
+print('Task 1 Напишите программу, удаляющую из текста все слова, содержащие абв')
 
-print('Task 3 Задайте последовательность чисел. Напишите программу, которая выведет список неповторяющихся элементов исходной последовательности.')
-lst = list(map(int, input("Введите числа через пробел:\n").split()))
-print(f"Исходный список: {lst}")
-new_lst = []
-[new_lst.append(i) for i in lst if i not in new_lst]
-print(f"Список из неповторяющихся элементов: {new_lst}")
+txt = input("Введите текст через пробел:\n")
+print(f"Исходный текст: {txt}")
+find_txt = "абв"
+lst = [i for i in txt.split() if find_txt not in i]
+print(f'Результат: {" ".join(lst)}'+'\r\n')
 
-print('Task 4 Задана натуральная степень k. Сформировать случайным образом список коэффициентов (значения от 0 до 100) многочлена и записать в файл многочлен степени k.')
-import random
-def write_file(st):
-    with open('file4.txt', 'w') as data:
-        data.write(st)
+print('Task 2 Создайте программу для игры с конфетами человек против человека.Условие задачи: '+'\r\n'+
+      'На столе лежит 2021 конфета. Играют два игрока делая ход друг после друга. Первый ход определяется жеребьёвкой. За один ход можно забрать не более чем 28 конфет.' +'\r\n'+
+      'Все конфеты оппонента достаются сделавшему последний ход. Сколько конфет нужно взять первому игроку, чтобы забрать все конфеты у своего конкурента?')
+
+from random import randint
+
+def input_dat(name):
+    x = int(input(f"{name}, введите количество конфет, которое возьмете от 1 до 28: "))
+    while x < 1 or x > 28:
+        x = int(input(f"{name}, введите корректное количество конфет: "))
+    return x
 
 
-def rnd():
-    return random.randint(0, 101)
+def p_print(name, k, counter, value):
+    print(f"Ходил {name}, он взял {k}, теперь у него {counter}. Осталось на столе {value} конфет.")
 
-
-def create_mn(k):
-    lst = [rnd() for i in range(k + 1)]
-    return lst
-
-
-def create_str(sp):
-    lst = sp[::-1]
-    wr = ''
-    if len(lst) < 1:
-        wr = 'x = 0'
-    else:
-        for i in range(len(lst)):
-            if i != len(lst) - 1 and lst[i] != 0 and i != len(lst) - 2:
-                wr += f'{lst[i]}x^{len(lst) - i - 1}'
-                if lst[i + 1] != 0:
-                    wr += ' + '
-            elif i == len(lst) - 2 and lst[i] != 0:
-                wr += f'{lst[i]}x'
-                if lst[i + 1] != 0:
-                    wr += ' + '
-            elif i == len(lst) - 1 and lst[i] != 0:
-                wr += f'{lst[i]} = 0'
-            elif i == len(lst) - 1 and lst[i] == 0:
-                wr += ' = 0'
-    return wr
-
-
-k = int(input("Введите натуральную степень k = "))
-koef = create_mn(k)
-write_file(create_str(koef))
-print('Task 5 Даны два файла, в каждом из которых находится запись многочлена. Задача - сформировать файл, содержащий сумму многочленов.')
-
-import random
-
-
-# запись в файл
-def write_file(name, st):
-    with open(name, 'w') as data:
-        data.write(st)
-
-
-# создание случайного числа от 0 до 100
-def rnd():
-    return random.randint(0, 101)
-
-
-# создание коэффициентов многочлена
-def create_mn(k):
-    lst = [rnd() for i in range(k + 1)]
-    return lst
-
-
-# создание многочлена в виде строки
-def create_str(sp):
-    lst = sp[::-1]
-    wr = ''
-    if len(lst) < 1:
-        wr = 'x = 0'
-    else:
-        for i in range(len(lst)):
-            if i != len(lst) - 1 and lst[i] != 0 and i != len(lst) - 2:
-                wr += f'{lst[i]}x^{len(lst) - i - 1}'
-                if lst[i + 1] != 0 or lst[i + 2] != 0:
-                    wr += ' + '
-            elif i == len(lst) - 2 and lst[i] != 0:
-                wr += f'{lst[i]}x'
-                if lst[i + 1] != 0 or lst[i + 2] != 0:
-                    wr += ' + '
-            elif i == len(lst) - 1 and lst[i] != 0:
-                wr += f'{lst[i]} = 0'
-            elif i == len(lst) - 1 and lst[i] == 0:
-                wr += ' = 0'
-    return wr
-
-
-# получение степени многочлена
-def sq_mn(k):
-    if 'x^' in k:
-        i = k.find('^')
-        num = int(k[i + 1:])
-    elif ('x' in k) and ('^' not in k):
-        num = 1
-    else:
-        num = -1
-    return num
-
-
-# получение коэффицента члена многочлена
-def k_mn(k):
-    if 'x' in k:
-        i = k.find('x')
-        num = int(k[:i])
-    return num
-
-
-# разбор многочлена и получение его коэффициентов
-def calc_mn(st):
-    st = st[0].replace(' ', '').split('=')
-    st = st[0].split('+')
-    lst = []
-    l = len(st)
-    k = 0
-    if sq_mn(st[-1]) == -1:
-        lst.append(int(st[-1]))
-        l -= 1
-        k = 1
-    i = 1  # степень
-    ii = l - 1  # индекс
-    while ii >= 0:
-        if sq_mn(st[ii]) != -1 and sq_mn(st[ii]) == i:
-            lst.append(k_mn(st[ii]))
-            ii -= 1
-            i += 1
-        else:
-            lst.append(0)
-            i += 1
-
-    return lst
-
-
-# создание двух файлов
-
-k1 = int(input("Введите натуральную степень для первого файла k = "))
-k2 = int(input("Введите натуральную степень для второго файла k = "))
-koef1 = create_mn(k1)
-koef2 = create_mn(k2)
-write_file("file5_1.txt", create_str(koef1))
-write_file("file5_2.txt", create_str(koef2))
-
-# нахождение суммы многочлена
-
-with open('file5_1.txt', 'r') as data:
-    st1 = data.readlines()
-with open('file5_2.txt', 'r') as data:
-    st2 = data.readlines()
-print(f"Первый многочлен {st1}")
-print(f"Второй многочлен {st2}")
-lst1 = calc_mn(st1)
-lst2 = calc_mn(st2)
-ll = len(lst1)
-if len(lst1) > len(lst2):
-    ll = len(lst2)
-lst_new = [lst1[i] + lst2[i] for i in range(ll)]
-if len(lst1) > len(lst2):
-    mm = len(lst1)
-    for i in range(ll, mm):
-        lst_new.append(lst1[i])
+player1 = input("Введите имя первого игрока: ")
+player2 = input("Введите имя второго игрока: ")
+value = int(input("Введите количество конфет на столе: "))
+flag = randint(0,2) # флаг очередности
+if flag:
+    print(f"Первый ходит {player1}")
 else:
-    mm = len(lst2)
-    for i in range(ll, mm):
-        lst_new.append(lst2[i])
-write_file("file5_res.txt", create_str(lst_new))
-with open('file5_res.txt', 'r') as data:
-    st3 = data.readlines()
-print(f"Результирующий многочлен {st3}")
+    print(f"Первый ходит {player2}")
 
+counter1 = 0
+counter2 = 0
+
+while value > 28:
+    if flag:
+        k = input_dat(player1)
+        counter1 += k
+        value -= k
+        flag = False
+        p_print(player1, k, counter1, value)
+    else:
+        k = input_dat(player2)
+        counter2 += k
+        value -= k
+        flag = True
+        p_print(player2, k, counter2, value)
+
+if flag:
+    print(f"Выиграл {player1}")
+else:
+    print(f"Выиграл {player2}")
+
+#Human vs Bot
+
+'''def input_dat(name):
+    x = int(input(f"{name}, введите количество конфет, которое возьмете от 1 до 28: "))
+    while x < 1 or x > 28:
+        x = int(input(f"{name}, введите корректное количество конфет: "))
+    return x
+
+
+def p_print(name, k, counter, value):
+    print(f"Ходил {name}, он взял {k}, теперь у него {counter}. Осталось на столе {value} конфет.")
+
+player1 = input("Введите имя первого игрока: ")
+player2 = "Bot"
+value = int(input("Введите количество конфет на столе: "))
+flag = randint(0,2) # флаг очередности
+if flag:
+    print(f"Первый ходит {player1}")
+else:
+    print(f"Первый ходит {player2}")
+
+counter1 = 0 
+counter2 = 0
+
+while value > 28:
+    if flag:
+        k = input_dat(player1)
+        counter1 += k
+        value -= k
+        flag = False
+        p_print(player1, k, counter1, value)
+    else:
+        k = randint(1,29)
+        counter2 += k
+        value -= k
+        flag = True
+        p_print(player2, k, counter2, value)
+
+if flag:
+    print(f"Выиграл {player1}")
+else:
+    print(f"Выиграл {player2}")
+'''
+#human vs DadBot
+'''
+from random import randint
+
+def input_dat(name):
+    x = int(input(f"{name}, введите количество конфет, которое возьмете от 1 до 28: "))
+    while x < 1 or x > 28:
+        x = int(input(f"{name}, введите корректное количество конфет: "))
+    return x
+
+
+def p_print(name, k, counter, value):
+    print(f"Ходил {name}, он взял {k}, теперь у него {counter}. Осталось на столе {value} конфет.")
+
+
+def bot_calc(value):
+    k = randint(1,29)
+    while value-k <= 28 and value > 29:
+        k = randint(1,29)
+    return k
+
+player1 = input("Введите имя первого игрока: ")
+player2 = "Bot"
+value = int(input("Введите количество конфет на столе: "))
+flag = randint(0,2) # флаг очередности
+if flag:
+    print(f"Первый ходит {player1}")
+else:
+    print(f"Первый ходит {player2}")
+
+counter1 = 0 
+counter2 = 0
+
+while value > 28:
+    if flag:
+        k = input_dat(player1)
+        counter1 += k
+        value -= k
+        flag = False
+        p_print(player1, k, counter1, value)
+    else:
+        k = bot_calc(value)
+        counter2 += k
+        value -= k
+        flag = True
+        p_print(player2, k, counter2, value)
+
+if flag:
+    print(f"Выиграл {player1}")
+else:
+    print(f"Выиграл {player2}")
+'''
+print('Task 3 Крестики нулики')
+board = list(range(1,10))
+
+def draw_board(board):
+    print ("-" * 13)
+    for i in range(3):
+        print ("|", board[0+i*3], "|", board[1+i*3], "|", board[2+i*3], "|")
+        print ("-" * 13)
+
+def take_input(player_token):
+    valid = False
+    while not valid:
+        player_answer = input("Куда поставим " + player_token+"? ")
+        try:
+            player_answer = int(player_answer)
+        except:
+            print ("Некорректный ввод. Вы уверены, что ввели число?")
+            continue
+        if player_answer >= 1 and player_answer <= 9:
+            if (str(board[player_answer-1]) not in "XO"):
+                board[player_answer-1] = player_token
+                valid = True
+            else:
+                print ("Эта клеточка уже занята")
+        else:
+            print ("Некорректный ввод. Введите число от 1 до 9 чтобы походить.")
+
+def check_win(board):
+    win_coord = ((0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6))
+    for each in win_coord:
+        if board[each[0]] == board[each[1]] == board[each[2]]:
+            return board[each[0]]
+    return False
+
+def main(board):
+    counter = 0
+    win = False
+    while not win:
+        draw_board(board)
+        if counter % 2 == 0:
+            take_input("X")
+        else:
+            take_input("O")
+        counter += 1
+        if counter > 4:
+            tmp = check_win(board)
+            if tmp:
+                print (tmp, "выиграл!")
+                win = True
+                break
+        if counter == 9:
+            print ("Ничья!")
+            break
+    draw_board(board)
+
+main(board)
+print('Task 5 Реализуйте RLE алгоритм: реализуйте модуль сжатия и восстановления данных.')
+def coding(txt):
+    count = 1
+    res = ''
+    for i in range(len(txt)-1):
+        if txt[i] == txt[i+1]:
+            count += 1
+        else:
+            res = res + str(count) + txt[i]
+            count = 1
+    if count > 1 or (txt[len(txt)-2] != txt[-1]):
+        res = res + str(count) + txt[-1]
+    return res
+
+def decoding(txt):
+    number = ''
+    res = ''
+    for i in range(len(txt)):
+        if not txt[i].isalpha():
+            number += txt[i]
+        else:
+            res = res + txt[i] * int(number)
+            number = ''
+    return res
+
+
+s = input("Введите текст для кодировки: ")
+print(f"Текст после кодировки: {coding(s)}")
+print(f"Текст после дешифровки: {decoding(coding(s))}")
