@@ -20,3 +20,24 @@ odd_el = str([numbers_list[item] for item in range(1, len(numbers_list), 2)]).st
 print(f'Для списка {numbers_list} сумма чисел, стоящих на нечётных позициях: \n{odd_el} равна {sum_odd}.')
 
 
+print('Task5 Задайте число. Составьте список чисел Фибоначчи.')
+from functools import reduce
+#fibonacci lamda
+def fibonacci(count):
+    sequence=(0,1)
+    for _ in range(2,count):
+        sequence+=(reduce(lambda a, b:a+b,sequence[-2:]),)
+        return sequence[:count]
+
+print(fibonacci(10))
+
+
+#fibonaci lambda+map
+def fibonacciMap(count):
+    sequenceM = [0, 1]
+
+    any(map(lambda _:sequenceM.append(sum(sequenceM[-2:])),range(2,count)))
+
+    return sequenceM[:count]
+
+print(fibonacciMap(10))
