@@ -1,39 +1,82 @@
-import student as st
-import lecture as lect
+from kivy.app import App
+
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
+
+from kivy.uix.button import Button
+from kivy.config import Config
+
+Config.set("graphics", "resizable", "0")
+Config.set("graphics", "width", "300")
+Config.set("graphics", "height", "300")
 
 
-def option():
-    print("\nВас приветствует программа мониторинга процессов обучения студентов!")
-    ch = int(input('Введите что хотите сделать: \n \
-    1: Поиск ID студента по фамилии \n \
-    2: Посмотреть класс  и место которое занимает  студент \n \
-    3: Выход\n \
-    Ваш выбор: '))
+class MainApp(App):
+    def __init__(self):
+        super().__init__()
+        self.switch = True
 
-    if ch == 1:
-        Surn = str(input("Введите фамилию ученика: "))
-        if Surn in st.students['Фамилия']:
-            index = st.students['Фамилия'].index(Surn)
-        print(f"{st.students['ID'][index]}, {st.students['Имя'][index]},{st.students['Фамилия'][index]}\n,{st.students['Дата рождения'][index]}, {st.students['Успеваемость'][index]}")
-        print('\nХотите выполнить какую-то другую операцию??? Y или N: ')
-        num = input()
-        if num == 'Y' or 'y' or 'У' or 'у':
-            option()
-        exit()
+    def tic_tac_toe(self, arg):
+        arg.disabled = True
+        arg.text = 'X' if self.switch else 'O'
+        self.switch = not self.switch
 
-    elif ch == 2:
-        c = input('Введите ID студента для вывода по классам: ')
-        if c in lect.lecture['ID']:
-            index = lect.lecture['ID'].index(c)
-            print(f" Сидит в классе - {lect.lecture['Предмет'][index]}\n\, за партой номер - {lect.lecture['Номер парты'][index]}, это {lect.lecture['Ряд'][index]}, парта - {lect.lecture['Вид парты'][index]}, Имя: {st.students['Имя'][index]}, Фамилия - {st.students['Фамилия'][index]}, и успеваемасть у студента: {st.students['Успеваемость'][index]}")
-            print('\nХотите выполнить другую операцию??? Y или N: ')
-            num = input()
-            if num == 'Y' or 'y' or 'У' or 'у':
-                option()
-            exit()
-    else:
-        print('еще раз')
-    exit()
+        coordinate = (
+            (0, 1, 2), (3, 4, 5), (6, 7, 8),  # X
+            (0, 3, 6), (1, 4, 7), (2, 5, 8),  # Y
+            (0, 4, 8), (2, 4, 6),  # D
+        )
+
+        vector = lambda item: [self.buttons[x].text for x in item]
+
+        color = [0, 1, 0, 1]
+
+        for item in coordinate:
+            if vector(item).count('X') == 3 or vector(item).count('O') == 3:
+                win = True
+                for i in item:
+                    self.buttons[i].color = color
+                for button in self.buttons:
+                    button.disabled = True
+                break
+
+    def restart(self, arg):
+        self.switch = True
+
+        for button in self.buttons:
+            button.color = [0, 0, 0, 1]
+            button.text = ""
+            button.disabled = False
+
+    def build(self):
+        self.title = "Крестики-нолики"
+
+        root = BoxLayout(orientation="vertical", padding=5)
+
+        grid = GridLayout(cols=3)
+        self.buttons = []
+        for _ in range(9):
+            button = Button(
+                color=[0, 0, 0, 1],
+                font_size=24,
+                disabled=False,
+                on_press=self.tic_tac_toe
+            )
+            self.buttons.append(button)
+            grid.add_widget(button)
+
+        root.add_widget(grid)
+
+        root.add_widget(
+            Button(
+                text="Restart",
+                size_hint=[1, .1],
+                on_press=self.restart
+            )
+        )
+
+        return root
 
 
-option()
+if __name__ == "__main__":
+    MainApp().run()
